@@ -4,8 +4,13 @@ import cors from "cors"
 import dotenv from "dotenv"
 import connectDb from "./utils/db.js";
 dotenv.config({});
+import path from "path"
 
 const app = express();
+
+
+const __dirname = path.resolve();
+
 
 // middlewares
 app.use(express.json());
@@ -27,6 +32,8 @@ import companyRoute from "./routes/companyRoute.js"
 import jobRoute from "./routes/jobRoute.js";
 import ApplicationRoute from "./routes/applicationRoute.js";
 
+
+
 // using api's
 
 app.use("/api/v1/user",userRoutes);
@@ -35,7 +42,10 @@ app.use("/api/v1/job",jobRoute);
 app.use("/api/v1/application",ApplicationRoute);
 
 
-
+app.use(express.static(path.join(__dirname,"/frontend/dist")))
+app.get("*",(req,res)=>{
+    res.sendFile(path.resolve(__dirname,"frontend","dist","index.html"));
+});
 
 
 app.get("/home",(req,res)=>{
